@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub de Ferramentas de IA para Acadêmicos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chosen Palette: Academic Neutrals -->
+    <!-- Application Structure Plan: A single-page application with a fixed vertical sidebar for navigation and a main content area. This dashboard-like structure was chosen for its clarity and ease of navigation, which is ideal for an educational tool. It allows users to easily switch between different tutorials (NotebookLM, Monograph Projects, etc.) without losing context. Each section is a self-contained module, activated by clicking the corresponding navigation link. This design prioritizes focused learning by presenting one topic at a time, while keeping all other resources just a click away. -->
+    <!-- Visualization & Content Choices: The source report contains text-based tutorials and prompts. The primary goal is to make this information accessible and actionable. Therefore, the presentation method focuses on clear typography and interactive components. Prompts are displayed in pre-formatted blocks with a 'copy to clipboard' button (JS interaction), which is a highly practical feature. Tutorial steps are presented in ordered lists for clarity. Icons (Font Awesome) are used to provide quick visual cues for each navigation section. This approach avoids complex visualizations like charts (which are not needed for this content) and adheres to the NO SVG/Mermaid constraint, creating a clean, functional, and user-friendly interface using only HTML, Tailwind CSS, and vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link.active {
+            background-color: #e0f2fe;
+            color: #0c4a6e;
+            font-weight: 600;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4b5563;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-white shadow-md flex-shrink-0">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-sky-800">IA para Docentes</h1>
+                <p class="text-sm text-slate-500 mt-1">UNEMAT</p>
+            </div>
+            <nav class="mt-4">
+                <a href="#welcome" class="nav-link flex items-center py-3 px-6 text-slate-600 hover:bg-slate-100">
+                    <i class="fas fa-home w-6 text-center"></i><span class="ml-3">Boas-vindas</span>
+                </a>
+                <a href="#notebooklm" class="nav-link flex items-center py-3 px-6 text-slate-600 hover:bg-slate-100">
+                    <i class="fas fa-book-open w-6 text-center"></i><span class="ml-3">Mapeamento com NotebookLM</span>
+                </a>
+                <a href="#monografia" class="nav-link flex items-center py-3 px-6 text-slate-600 hover:bg-slate-100">
+                    <i class="fas fa-file-alt w-6 text-center"></i><span class="ml-3">Projetos de Monografia</span>
+                </a>
+                <a href="#artigo" class="nav-link flex items-center py-3 px-6 text-slate-600 hover:bg-slate-100">
+                    <i class="fas fa-feather-alt w-6 text-center"></i><span class="ml-3">Escrita de Artigo</span>
+                </a>
+                <a href="#multimidia" class="nav-link flex items-center py-3 px-6 text-slate-600 hover:bg-slate-100">
+                    <i class="fas fa-photo-video w-6 text-center"></i><span class="ml-3">Conteúdo Multimídia</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 sm:p-10">
+            
+            <!-- Welcome Section -->
+            <section id="welcome" class="content-section active">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4">Hub de Ferramentas de IA para Pesquisa Acadêmica</h2>
+                <p class="text-lg text-slate-600 mb-8">Bem-vindo(a) ao hub interativo do curso de IA para docentes. Esta aplicação foi projetada para fornecer acesso rápido e prático aos exercícios e tutoriais. Navegue pelas seções ao lado para explorar como a IA pode otimizar tarefas acadêmicas, desde o mapeamento de literatura até a criação de conteúdo multimídia.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl text-sky-700 mb-2">Explore os Tutoriais</h3>
+                        <p class="text-slate-600">Cada seção oferece um guia passo a passo e prompts prontos para uso. Clique em uma categoria no menu à esquerda para começar.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl text-sky-700 mb-2">Copie e Use</h3>
+                        <p class="text-slate-600">Todos os prompts de comando possuem um botão "Copiar". Use-os diretamente em ferramentas como ChatGPT, Gemini, Claude ou Gamma para acelerar seu trabalho.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NotebookLM Section -->
+            <section id="notebooklm" class="content-section">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Mapeamento de Literatura com NotebookLM</h2>
+                <p class="text-md text-slate-500 mb-6">Este exercício demonstra como usar o NotebookLM para analisar um corpo de texto, identificar autores influentes e mapear conexões conceituais, agilizando a revisão de literatura.</p>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="font-semibold text-xl mb-4">Exercício: Mapeamento e Co-Citações</h3>
+                    <ol class="list-decimal list-inside space-y-4 text-slate-700">
+                        <li><span class="font-semibold">Coleta de Dados:</span> Reúna de 5 a 10 artigos científicos sobre um tópico específico, como "Inteligência Artificial e Retórica" ou "Processamento de Linguagem Natural em Línguas Indígenas".</li>
+                        <li><span class="font-semibold">Upload e Síntese:</span> Carregue todos os documentos em um novo espaço no NotebookLM.</li>
+                        <li><span class="font-semibold">Use o Prompt:</span> Utilize o prompt abaixo para guiar a análise da IA.</li>
+                        <div class="relative mt-2">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">A partir destes documentos, identifique os 3 autores mais citados ou influentes. Para cada um, descreva suas principais contribuições. Em seguida, crie um mapa mental ou um diagrama textual que mostre as conexões conceituais entre esses autores e os temas principais.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                        <li><span class="font-semibold">Análise Crítica:</span> Compare a saída do NotebookLM com seu conhecimento prévio da área. Avalie os acertos, as omissões e as possíveis interpretações equivocadas da IA.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Monografia Section -->
+            <section id="monografia" class="content-section">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Elaboração de Projetos de Monografia</h2>
+                <p class="text-md text-slate-500 mb-6">Utilize a IA como uma co-piloto para gerar ideias e estruturar propostas de pesquisa. Os prompts a seguir são pontos de partida para criar projetos robustos e inovadores.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-4">Projeto A (Letras/Computação)</h3>
+                        <p class="mb-3 text-slate-600">Foco na ética da IA e criação de narrativas literárias.</p>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">Proponha um tema de monografia interdisciplinar para o curso de Letras e Computação na UNEMAT. O tema deve explorar a ética da IA na criação de narrativas literárias. Estruture uma proposta completa, incluindo: Título, Problema de Pesquisa, Justificativa da Relevância do Tema, Objetivo Geral, 3 Objetivos Específicos e um Rascunho da Metodologia, com foco na análise de textos gerados por IA.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-4">Projeto B (Computação/Letras)</h3>
+                        <p class="mb-3 text-slate-600">Foco na aplicação de IA para tradução automática de poesia.</p>
+                         <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">Crie um projeto de monografia sobre a aplicação de IA para tradução automática de poesia. A pesquisa deve envolver a comparação da tradução automática com a tradução humana. Elabore uma proposta com: Título, Pergunta de Pesquisa, Hipótese, Revisão de Literatura (2 parágrafos), Metodologia detalhada (passos para a coleta e análise de dados) e o cronograma.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Artigo Section -->
+            <section id="artigo" class="content-section">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Início da Escrita Científica de um Artigo</h2>
+                <p class="text-md text-slate-500 mb-6">Supere a "página em branco" usando a IA para organizar suas leituras e esboçar as seções iniciais do seu artigo científico.</p>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-2">1. Mapeamento de Revisão</h3>
+                        <p class="mb-3 text-slate-600">Use este prompt para criar uma tabela comparativa a partir dos resumos de artigos que você já leu.</p>
+                        <div class="relative">
+                           <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">A partir dos seguintes resumos de 5 artigos sobre [seu tema], crie uma tabela comparativa. As colunas devem ser: 'Autor', 'Ano', 'Principal Tese', 'Metodologia', 'Conclusões' e 'Lacuna de Pesquisa identificada'.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-2">2. Drafting do Abstract</h3>
+                        <p class="mb-3 text-slate-600">Com base na tabela gerada, peça à IA para redigir uma primeira versão do seu resumo.</p>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">Com base nas informações da tabela anterior e no problema de pesquisa que você definiu, escreva um abstract de 200 palavras para um artigo. O abstract deve seguir a estrutura IMRaD (Introdução, Métodos, Resultados e Discussão) e destacar a contribuição original do seu trabalho.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-2">3. Elaboração de Palavras-Chave</h3>
+                        <p class="mb-3 text-slate-600">Finalize o esboço inicial gerando palavras-chave relevantes para o seu resumo.</p>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">Proponha 5 palavras-chave em português e 5 em inglês que melhor representem o abstract gerado. Elas devem ser específicas e relevantes para a área.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Multimidia Section -->
+            <section id="multimidia" class="content-section">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Criação de Conteúdo Multimídia</h2>
+                <p class="text-md text-slate-500 mb-6">Transforme sua pesquisa em formatos de conteúdo mais amplos e acessíveis, como vídeos, apresentações e podcasts, usando os prompts abaixo.</p>
+                 <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-2">Prompt para Vídeos (YouTube)</h3>
+                        <p class="mb-3 text-slate-600">Ideal para criar roteiros de vídeos educacionais e de divulgação científica.</p>
+                        <div class="relative">
+                           <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">Elabore um roteiro para um vídeo educacional no YouTube de 3 minutos sobre '[tema do vídeo, por exemplo, 'Semântica Computacional']'. O roteiro deve ter um tom didático, ser dividido em seções claras (Introdução, Fundamentos, Exemplos Práticos e Conclusão). Inclua sugestões de animações simples e legendas na tela para cada parte, tornando-o acessível e dinâmico para os alunos de Letras e Computação.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-2">Prompt para Apresentações (Gamma)</h3>
+                        <p class="mb-3 text-slate-600">Use para gerar uma estrutura completa para defesa de projetos ou apresentação de resultados.</p>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">Crie uma apresentação no Gamma com 10 slides, focada na defesa de um projeto de pesquisa. O título do projeto é '[título do seu projeto]'. A apresentação deve ser concisa e profissional, com slides dedicados a: Título, Introdução (contexto e problema), Objetivos, Justificativa, Metodologia, Resultados Esperados, Cronograma, Orçamento (hipotético) e Referências Principais.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-semibold text-xl mb-2">Prompt para Resumos em Áudio (Podcast)</h3>
+                        <p class="mb-3 text-slate-600">Transforme teses e artigos densos em roteiros de áudio acessíveis para podcasts.</p>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto whitespace-pre-wrap"><code class="language-text">A partir do resumo de uma tese de doutorado sobre '[tema da tese]', crie um roteiro de áudio para um podcast de 4 minutos. O roteiro deve ser como uma entrevista com o próprio pesquisador. Inclua perguntas e respostas que expliquem a importância do trabalho, as principais descobertas e o impacto potencial para a sociedade.</code><button class="copy-btn">Copiar</button></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const copyButtons = document.querySelectorAll('.copy-btn');
+
+            function updateContent(hash) {
+                let targetHash = hash || window.location.hash || '#welcome';
+                
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                const targetSection = document.querySelector(targetHash);
+                const targetLink = document.querySelector(`.nav-link[href="${targetHash}"]`);
+
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                } else {
+                    document.querySelector('#welcome').classList.add('active');
+                }
+                
+                if (targetLink) {
+                    targetLink.classList.add('active');
+                } else {
+                    document.querySelector('.nav-link[href="#welcome"]').classList.add('active');
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetHash = this.getAttribute('href');
+                    history.pushState(null, null, targetHash);
+                    updateContent(targetHash);
+                });
+            });
+
+            window.addEventListener('popstate', function() {
+                updateContent(window.location.hash);
+            });
+
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const codeBlock = this.previousElementSibling;
+                    const textToCopy = codeBlock.innerText;
+                    
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        button.innerText = 'Copiado!';
+                        setTimeout(() => {
+                            button.innerText = 'Copiar';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Falha ao copiar texto: ', err);
+                    }
+                    document.body.removeChild(textArea);
+                });
+            });
+
+            updateContent();
+        });
+    </script>
+</body>
+</html>
+

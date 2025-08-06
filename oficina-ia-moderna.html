@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina: IA no Ambiente Acadêmico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8f7f4;
+    }
+
+    /* NOVA CAPA MODERNA - APENAS ESTA PARTE É NOVA */
+    #capa {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #0ea5e9 50%, #06b6d4 75%, #10b981 100%);
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    /* Elementos de fundo - Neural Network */
+    #capa::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 40% 80%, rgba(255,255,255,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 60% 20%, rgba(255,255,255,0.1) 2px, transparent 2px);
+        background-size: 100px 100px, 150px 150px, 120px 120px, 80px 80px;
+        z-index: 1;
+    }
+
+    /* Container dos logos */
+    .logos-header {
+        position: relative;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 1.5rem 3rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logos-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .logo-item {
+        transition: transform 0.3s ease;
+    }
+
+    .logo-item:hover {
+        transform: scale(1.05);
+    }
+
+    .logo-item img {
+        height: 120px;
+        width: auto;
+        max-width: 300px;
+        object-fit: contain;
+    }
+    .logo-maior img {
+        height: 130px !important;  /* Só este logo fica maior */
+        max-width: 400px !important;
+    }
+    /* Conteúdo principal */
+    .capa-content {
+        position: relative;
+        z-index: 10;
+        max-width: 900px;
+    }
+
+    .main-title {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        color: white;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        line-height: 1.2;
+        margin-bottom: 2rem;
+        letter-spacing: -0.02em;
+    }
+
+    .professor-info {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .contact-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .contact-links a:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Botão moderno */
+    .btn-iniciar {
+        background: linear-gradient(45deg, #f59e0b, #f97316);
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 1rem 3rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-iniciar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-iniciar:hover::before {
+        left: 100%;
+    }
+
+    .btn-iniciar:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(245, 158, 11, 0.6);
+        background: linear-gradient(45deg, #f97316, #ea580c);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .logos-container {
+            gap: 1.5rem;
+        }
+
+        .logo-item img {
+            height: 60px;
+        }
+
+        .logos-header {
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-links {
+            gap: 1rem;
+        }
+
+        .btn-iniciar {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+        }
+    }
+    /* FIM DA CAPA MODERNA */
+
+    /* CSS ORIGINAL DO MATERIAL - MANTIDO IGUAL */
+    .tab-active {
+        border-color: #4a5568;
+        background-color: #e2e8f0;
+        color: #2d3748;
+        font-weight: 600;
+    }
+    .tab-inactive {
+        border-color: transparent;
+        color: #718096;
+    }
+    .content-card {
+        background-color: #ffff;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+    .prompt-box {
+        background-color: #f7fafc;
+        border-left: 4px solid #4299e1;
+    }
+    </style>
+</head>
+<body class="antialiased text-gray-700">
+
+    <!-- NOVA CAPA MODERNA -->
+    <section id="capa" class="min-h-screen">
+        <!-- Header com logos -->
+        <div class="logos-header">
+            <div class="logos-container">
+                <div class="logo-item">
+                    <img src="unemat.campus.aia.campus.roo.fundo.branco.png" alt="Logo UNEMAT">
+                </div>
+                <div class="logo-item">
+                    <img src="logo_bcc_vertical_fundo_branco_texto_preto.png" alt="Logo BCC">
+                </div>
+                <div class="logo-item logo-maior">
+                    <img src="Logo.PIXEL.Laboratorio.H.preto.efeitos.fundo.branco.jpeg" alt="Logo PIXEL">
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo principal -->
+<div class="capa-content">
+    <h1 class="main-title">
+        Inteligência Artificial no Ambiente Acadêmico
+    </h1>
+    <p class="text-xl text-white/90 mb-4 font-medium">
+        Capacitação Prática para Docentes da UNEMAT
+    </p>
+
+    <p class="professor-info">
+        Prof. Dr. Carlos Alex Sander Juvencio Gulo
+    </p>
+
+    <div class="contact-links">
+        <a href="https://bit.ly/CAlexGoogleScholar" target="_blank" class="hover:text-blue-600 transition">
+            📚 Google Scholar
+        </a>
+        <a href="mailto:sander@unemat.br" target="_blank" class="hover:text-blue-600 transition">
+            ✉️ [sander@unemat.br]</span>
+        </a>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button id="iniciar-oficina" class="btn-iniciar">
+            Iniciar Oficina
+        </button>
+        <a href="hubinterativo.html" class="bg-white/10 text-white font-semibold py-3 px-6 rounded-full border-2 border-white/20 hover:bg-white/20 transition-colors duration-300 transform hover:-translate-y-1 shadow-lg">
+            Material Extra
+        </a>
+    </div>
+</div>
+    </section>
+
+    <!-- CONTEÚDO ORIGINAL DA OFICINA - DESIGN MANTIDO IGUAL -->
+    <div class="container mx-auto px-4 py-8 md:py-12" id="conteudo-oficina" style="display: none;">
+
+        <header class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Oficina: Inteligência Artificial no Ambiente Acadêmico</h1>
+        <p class="mt-2 text-lg text-gray-600">Cronograma de Atividades Práticas (8 horas)</p>
+        </header>
+        <section class="mb-8 content-card p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Guia Rápido da Interface do Gemini</h2>
+        <p class="text-gray-600 mb-4">
+        Antes de iniciar as atividades, familiarize-se com os principais elementos da interface do Gemini, que serão utilizados durante toda a oficina.
+        </p>
+        <div class="space-y-6 text-gray-700">
+        <div>
+        <h3 class="font-semibold text-lg">1. Modelo de IA</h3>
+        <p class="mt-1">
+        No canto superior esquerdo, você pode ver o modelo de IA que está sendo usado. A sigla "2.5 Flash" indica o modelo selecionado, ideal para respostas rápidas.
+        </p>
+        <p>
+        Abaixo, um menu dropdown permite a troca entre os diferentes modelos disponíveis, que podem ser mais adequados para diferentes tipos de tarefa (por exemplo, um modelo otimizado para imagens ou para tarefas mais complexas).
+        </p>
+        </div>
+        <div>
+        <h3 class="font-semibold text-lg">2. Barra Lateral</h3>
+        <p class="mt-1">
+        No lado esquerdo, o ícone de um quadrado com um lápis permite iniciar uma nova conversa. Abaixo, você encontra a lista de conversas anteriores, organizadas por nome ou data.
+        </p>
+        <p>
+        O ícone de uma engrenagem no canto inferior esquerdo permite acessar as configurações.
+        </p>
+        </div>
+        <div>
+        <h3 class="font-semibold text-lg">3. Caixa de Prompt</h3>
+        <p class="mt-1">
+        Localizada na parte inferior da tela, esta é a área onde você irá inserir suas instruções, perguntas, textos e anexar arquivos. Você pode interagir com a IA de diversas formas:
+        </p>
+        <ul class="list-disc list-inside ml-4 mt-2">
+        <li><strong>Texto:</strong> Digite suas instruções e perguntas. Seja claro e específico para obter melhores resultados.</li>
+        <li><strong>Áudio:</strong> O ícone de um microfone permite que você faça perguntas por voz.</li>
+        <li><strong>Input Multimodal:</strong> O ícone de um clipe de papel ao lado da caixa de texto permite anexar arquivos, como PDFs, DOCs ou imagens, para que o Gemini os analise e responda com base neles.</li>
+        <li><strong>Recursos Específicos:</strong> O ícone de um quadrado com um "+" no centro permite acessar recursos específicos como "Video", "Deep Research", "Canvas", etc., que serão explorados ao longo da oficina.</li>
+        </ul>
+        </div>
+        </div>
+        </section>
+
+        <section class="mb-8 content-card p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Recursos do Gemini a Serem Explorados</h2>
+        <p class="text-gray-600 mb-4">
+        A oficina "IA no Ambiente Acadêmico" é uma capacitação prática que visa explorar os diversos recursos do Gemini como ferramenta de apoio ao docente. Durante o curso, serão abordadas as seguintes funcionalidades para otimizar a rotina de trabalho e potencializar o ensino e a pesquisa:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+        <li><strong>Geração de Texto e Conteúdo:</strong> Criação de planos de aula, rubricas, ementas, prompts e até mesmo cenários complexos para estudo de caso.</li>
+        <li><strong>Geração e Análise de Código:</strong> Capacidade de gerar código em linguagens como Python e JavaScript para tarefas como análise e visualização de dados ou a criação de recursos educacionais interativos.</li>
+        <li><strong>Interpretação e Análise Multimodal:</strong> Avaliação e descrição de imagens, gráficos, diagramas e outros dados visuais para relatórios, apresentações ou aulas.</li>
+        <li><strong>Análise de Documentos:</strong> Síntese de textos longos, extração de dados estruturados (como em formato JSON) e avaliação de trabalhos acadêmicos (projetos, monografias).</li>
+        <li><strong>Síntese de Fala:</strong> Roteirização de vídeos e geração de áudio com diferentes vozes para a criação de podcasts ou narrações educativas.</li>
+        <li><strong>Simulação e Reflexão Crítica:</strong> Criação de debates éticos e a simulação de análises de dados qualitativos, que estimulam o pensamento crítico e aprofundam a discussão em sala de aula.</li>
+        </ul>
+        <p class="mt-4 text-gray-600">
+        Esta imersão prática tem como objetivo capacitar os docentes a utilizar esses recursos de forma eficaz, ética e estratégica, promovendo a inovação pedagógica e a eficiência no ambiente acadêmico.
+        </p>
+        </section>
+
+        <div class="max-w-4xl mx-auto">
+        <div class="mb-6 border-b border-gray-300">
+        <nav class="flex -mb-px" aria-label="Tabs">
+        <button id="tab-dia1" class="tab-active text-center w-1/2 py-4 px-1 text-sm font-medium border-b-2" aria-current="page">
+        🗓️ Dia 1: Conteúdo e Análise
+        </button>
+        <button id="tab-dia2" class="tab-inactive text-center w-1/2 py-4 px-1 text-sm font-medium border-b-2">
+        🗓️ Dia 2: Pesquisa e Avaliação
+        </button>
+        </nav>
+        </div>
+
+        <main>
+        <div id="content-dia1">
+        <div class="space-y-8">
+        <section class="content-card p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Módulo 1: O Gemini como Suporte à Elaboração de Conteúdo</h2>
+        <div class="space-y-6">
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 1: Geração de Propostas Temáticas</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Pense em um tópico da sua disciplina que seja complexo. Peça ao Gemini para gerar novas ideias de aula sobre ele.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Na condição de docente de [Sua disciplina] no ensino superior, me ajude a criar 5 ideias de aulas criativas e interativas sobre [seu tópico], com foco em metodologias ativas."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 2: Estruturação de Plano de Aula</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Escolha uma das ideias geradas no exercício anterior. Agora, peça ao Gemini para detalhar um plano de aula completo para essa ideia.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Com base na ideia de aula que eu acabei de criar sobre [nome da ideia de aula], elabore um plano de aula detalhado de 2 horas. Inclua objetivos, metodologia, atividades e como a avaliação será feita."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 3: Elaboração de Apresentação em Slides</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> **(Uso complementar: Use o plano de aula do exercício anterior)**. Copie o plano de aula que você criou e peça ao Gemini para montar um esqueleto de slides para a apresentação.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Com base no plano de aula que colei aqui, crie um esqueleto de apresentação de slides. Para cada slide, adicione um título, uma sugestão de texto e uma ideia de imagem ou gráfico representativo."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 4: Criação de Cenários e Casos de Estudo</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Peça ao Gemini para criar um cenário complexo para estudo de caso, ideal para aulas que exigem análise aprofundada ou dilemas éticos.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Crie um estudo de caso fictício sobre um dilema ético em engenharia genética. O caso deve ter múltiplos personagens e um conflito central para ser debatido em uma disciplina de bioética."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 5: Criação de Personas e Chatbots Educacionais</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Explore a capacidade do Gemini de assumir uma "persona". Crie um tutor virtual com uma personalidade específica para sua disciplina.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Crie a persona de um 'tutor de biologia' chamado BioBot para alunos de graduação. Ele deve ter um tom de voz encorajador, responder a dúvidas com analogias e sempre pedir para o aluno explicar o raciocínio."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 6: Geração de Atividades a Partir da Ementa</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Use a ementa de uma de suas disciplinas para pedir ao Gemini que gere novos projetos e atividades alinhados aos objetivos do curso e às competências do mercado de trabalho.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "A partir da ementa a seguir, crie 3 sugestões de projetos práticos e 5 ideias de atividades em sala de aula, considerando o alinhamento com as competências digitais e o mercado de trabalho. Adicione uma rubrica de avaliação para um dos projetos."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 7: Geração de Atividades a Partir de Documentos</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Anexe um arquivo PDF ou DOC (por exemplo, um capítulo de livro). Peça ao Gemini para criar atividades para os alunos com base no conteúdo do documento.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Com base no arquivo PDF sobre '[tema do PDF]' que enviei, crie 5 perguntas de debate para uma aula de 50 minutos e 3 propostas de exercícios práticos para os alunos."</p>
+        </blockquote>
+        </div>
+        </div>
+        </section>
+
+        <section class="content-card p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Módulo 2: Produção de Conteúdo Multimídia e Análise Visual</h2>
+        <div class="space-y-6">
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 8: Roteirização de Vídeos Educativos</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Utilize o Gemini para roteirizar um vídeo curto sobre um conceito complexo, definindo a estrutura e o texto para a narração.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Crie um roteiro detalhado para um vídeo de 3 minutos que explique o conceito de 'equilíbrio de Nash'. Inclua a introdução, a explicação com um exemplo prático, a conclusão e sugestões de elementos visuais."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 9: Geração de Código para Análise de Dados</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Forneça ao Gemini um conjunto de dados. Peça para que ele gere um script em Python para criar um gráfico de linha.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Com base nos dados a seguir, gere um script Python usando as bibliotecas pandas e matplotlib que crie um gráfico de linha mostrando a evolução das vendas mensais. Adicione títulos e rótulos aos eixos."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 10: Criação de Recursos Interativos (Canvas)</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Peça ao Gemini para elaborar o código base para um recurso interativo, como um quiz ou um simulador simples.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Gere o código HTML e JavaScript para um quiz de múltipla escolha com 5 perguntas sobre 'o ciclo hidrológico'. Inclua um contador de acertos e um feedback visual para cada resposta."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 11: Análise de Imagens e Dados Visuais</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Anexe uma imagem ou um gráfico ao Gemini. Peça para que ele descreva o conteúdo e os dados presentes.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Com base na imagem de um gráfico de barras que enviei, descreva as tendências e os dados mais relevantes. Elabore um parágrafo que possa ser usado na introdução de um relatório."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 12: Síntese de Fala com Várias Vozes</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Explore a geração de áudio. Peça ao Gemini para roteirizar e sintetizar um diálogo entre dois personagens com vozes distintas, ideal para podcasts.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Roteirize um diálogo entre um(a) professor(a) (voz Kore) e um(a) aluno(a) (voz Puck) para um podcast sobre a Revolução Industrial. O diálogo deve durar cerca de 1 minuto e ser didático e envolvente."</p>
+        </blockquote>
+        </div>
+        </div>
+        </section>
+        </div>
+        </div>
+
+        <div id="content-dia2" class="hidden">
+        <div class="space-y-8">
+        <section class="content-card p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Módulo 3: Pesquisa Aprofundada e Análise Acadêmica</h2>
+        <div class="space-y-6">
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 13: Sumarização e Análise de Artigos</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Forneça o resumo de um artigo. Peça ao Gemini para identificar os pontos centrais e comparar com outros textos.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Com base no resumo que se segue, proceder à identificação da tese central, da metodologia e das principais conclusões do artigo. Realizar a comparação destas conclusões com as de um artigo subsequente que será disponibilizado."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 14: Geração de Dados Estruturados (JSON)</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Forneça um texto acadêmico e peça ao Gemini para extrair e organizar informações específicas em formato JSON.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "A partir do trecho de artigo que fornecerei, extraia os nomes dos autores, o ano de publicação, o título e as palavras-chave. Organize essas informações em um formato JSON."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 15: Geração de Revisões de Literatura</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Use a IA para identificar lacunas em uma área de pesquisa e gerar uma tabela com artigos relevantes para uma revisão de literatura.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Identifique as principais lacunas na pesquisa sobre 'pedagogia da autonomia'. Elabore uma tabela com 5 artigos relevantes, incluindo o autor, ano, metodologia e a principal contribuição de cada um."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 16: Desenvolvimento de Ideias de Pesquisa</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Peça ao Gemini para ajudar a aprimorar uma ideia de projeto de pesquisa, gerando a estrutura completa de um pré-projeto.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Elabore um pré-projeto de pesquisa sobre 'o impacto das tecnologias digitais na saúde mental dos jovens', incluindo título, problema, objetivos, metodologia proposta e uma lista de 5 referências bibliográficas chave."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 17: Simulação de Análise de Dados Qualitativos</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Simule a análise de respostas de uma pesquisa. Peça ao Gemini para categorizar e sumarizar os resultados, demonstrando seu potencial em análises qualitativas.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Analise as seguintes 10 respostas de alunos sobre 'os desafios do ensino remoto'. Identifique os temas recorrentes, atribua categorias e sumarize os principais pontos de cada categoria."</p>
+        </blockquote>
+        </div>
+        </div>
+        </section>
+        <section class="content-card p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Módulo 4: Avaliação, Criação e Reflexão Crítica</h2>
+        <div class="space-y-6">
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 18: Criação de Rubricas Avaliativas</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Crie uma rubrica detalhada para avaliar uma atividade específica na sua disciplina.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Formule uma rubrica de avaliação pormenorizada para um projeto de pesquisa sobre 'Economia Circular', contemplando os critérios 'Introdução', 'Metodologia', 'Análise' e 'Conclusão'."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 19: Avaliação de Trabalhos a Partir de Arquivos</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Anexe um arquivo (PDF ou DOC) que simula um trabalho de aluno. Peça ao Gemini para avaliar o conteúdo e fornecer um feedback detalhado.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Avalie o arquivo DOC a seguir, que é um rascunho de uma monografia. Forneça um feedback detalhado sobre a clareza da tese, a estrutura da argumentação e a correção gramatical, simulando a perspectiva de um(a) professor(a)."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 20: Avaliação de Projeto de Monografia</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Anexe um projeto de monografia. O Gemini irá analisar o texto com base em critérios como relevância, clareza e viabilidade da metodologia proposta.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Analise o projeto de monografia a seguir. Avalie a relevância do problema de pesquisa, a clareza dos objetivos e a viabilidade da metodologia proposta. Sugira melhorias para o texto e a estrutura do projeto."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 21: Avaliação Completa de Monografia</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Anexe o texto de uma monografia final. O Gemini irá analisar o trabalho em sua totalidade, avaliando a qualidade da argumentação, a profundidade teórica e a consistência dos resultados, simulando uma banca de avaliação.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Avalie a monografia a seguir. Foque na qualidade da argumentação, na consistência teórica e na profundidade da análise. Identifique os pontos fortes e fracos do trabalho e sugira perguntas que poderiam ser feitas durante a defesa do TCC."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 22: Geração de Jogos Educativos Simples</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Peça ao Gemini para criar o código HTML e JavaScript de um mini-jogo, como um jogo da memória, para gamificar a aprendizagem de um tema específico.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Gere o código HTML e JavaScript para um jogo de memória com 8 cartas sobre os 'Principais Biomas Brasileiros'. O jogo deve ter um contador de tempo e mostrar uma mensagem de vitória ao final."</p>
+        </blockquote>
+        </div>
+        <hr>
+        <div>
+        <h3 class="font-semibold text-lg">Exercício 23: Debates Éticos e Análise de Currículo</h3>
+        <p class="mt-1 text-gray-600"><strong>Instrução:</strong> Use o Gemini para gerar argumentos a favor e contra um tema ético. Em seguida, peça para ele analisar a ementa de uma disciplina e sugerir como alinhá-la a competências de mercado.</p>
+        <blockquote class="prompt-box p-4 mt-3 italic text-gray-700">
+        <p><strong>Exemplo de Prompt:</strong> "Compor um breve texto em defesa da permissibilidade do uso de IA na elaboração de trabalhos acadêmicos, sob a condição de que haja a devida referenciação e a demonstração de autoria intelectual. Subsequentemente, analise a ementa de uma disciplina de 'Gestão de Pessoas' e sugira como o conteúdo pode ser alinhado às competências digitais demandadas pelo mercado."</p>
+        </blockquote>
+        </div>
+        </div>
+        </section>
+        </div>
+        </div>
+        </main>
+        </div>
+
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+        <p>Aplicação interativa gerada para a oficina "Inteligência Artificial no Ambiente Acadêmico".</p>
+        </footer>
+
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const iniciarOficinaBtn = document.getElementById('iniciar-oficina');
+    const capa = document.getElementById('capa');
+    const conteudoOficina = document.getElementById('conteudo-oficina');
+
+    iniciarOficinaBtn.addEventListener('click', () => {
+        capa.style.display = 'none';
+        conteudoOficina.style.display = 'block';
+    });
+
+    const tabDia1 = document.getElementById('tab-dia1');
+    const tabDia2 = document.getElementById('tab-dia2');
+    const contentDia1 = document.getElementById('content-dia1');
+    const contentDia2 = document.getElementById('content-dia2');
+
+    function switchTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+    activeTab.classList.remove('tab-inactive');
+    activeTab.classList.add('tab-active');
+    activeTab.setAttribute('aria-current', 'page');
+
+    inactiveTab.classList.remove('tab-active');
+    inactiveTab.classList.add('tab-inactive');
+    inactiveTab.removeAttribute('aria-current');
+
+    activeContent.classList.remove('hidden');
+    inactiveContent.classList.add('hidden');
+    }
+
+    tabDia1.addEventListener('click', () => {
+    switchTab(tabDia1, tabDia2, contentDia1, contentDia2);
+    });
+
+    tabDia2.addEventListener('click', () => {
+    switchTab(tabDia2, tabDia1, contentDia2, contentDia1);
+    });
+    </script>
+
+</body>
+</html>
